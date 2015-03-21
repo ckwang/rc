@@ -1,0 +1,6 @@
+macmenu File.Print key=<nop>
+" set guifont=Inconsolata\ for\ Powerline:h14
+set guifont=Monaco\ for\ Powerline:h12
+set lines=999 columns=9999
+set gcr=n:blinkon0
+set guioptions-=rL

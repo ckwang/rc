@@ -1,0 +1,194 @@
+set nocompatible
+filetype off
+
+" set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+
+" let Vundle manage Vundle, required
+Plugin 'gmarik/Vundle.vim'
+
+" General
+Plugin 'Shougo/vimproc.vim'
+Plugin 'Shougo/unite.vim'
+Plugin 'Shougo/unite-outline'
+Plugin 'bling/vim-airline'
+
+" Code browsing
+" Plugin 'kien/ctrlp.vim'
+Plugin 'scrooloose/nerdtree'
+Plugin 'majutsushi/tagbar'
+Plugin 'vim-scripts/gtags.vim'
+Plugin 'rking/ag.vim'
+
+" Editing
+Plugin 'wellle/targets.vim'
+Plugin 'terryma/vim-multiple-cursors'
+Plugin 'tpope/vim-surround'
+
+" Git
+Plugin 'tpope/vim-fugitive'
+Plugin 'airblade/vim-gitgutter'
+
+" Navigation
+Plugin 'Lokaltog/vim-easymotion'
+Plugin 'myusuf3/numbers.vim'
+
+" Code complete
+Plugin 'Valloric/YouCompleteMe'
+Plugin 'SirVer/ultisnips'
+" Plugin 'honza/vim-snippets'
+Plugin 'Raimondi/delimitMate'
+
+
+
+Plugin 'tomtom/tcomment_vim'
+Plugin 'octol/vim-cpp-enhanced-highlight'
+Plugin 'bronson/vim-trailing-whitespace'
+" Plugin 'xolox/vim-misc'
+" Plugin 'xolox/vim-easytags'
+
+" color themes
+Plugin 'altercation/vim-colors-solarized'
+
+" Vundle finalization
+call vundle#end()
+filetype plugin indent on
+if has('syntax') && !exists('g:syntax_on')
+  syntax enable
+endif
+
+" Set colorscheme
+if !has("gui_running")
+  let g:solarized_termtrans=1
+  let g:solarized_termcolors=256
+endif
+colorscheme solarized
+
+" General
+set exrc
+set secure
+set autoread
+set updatetime=500
+set encoding=utf-8
+set termencoding=utf-8
+set formatoptions+=j
+set mouse=nicr
+
+" Indentation
+set autoindent
+set smarttab
+set tabstop=2 shiftwidth=2 expandtab
+set shiftround
+set nostartofline
+set backspace=indent,eol,start
+
+" Completion
+set complete-=i
+set completeopt=menuone,longest,preview
+set wildmenu
+
+set nrformats-=octal
+set scrolloff=2
+
+" Search
+set incsearch
+set hlsearch
+set ignorecase
+set smartcase
+" Use <C-L> to clear the highlighting of :set hlsearch
+if maparg('<C-L>', 'n') ==# ''
+  nnoremap <silent> <C-L> :nohlsearch<CR><C-L>
+endif
+
+" Display
+set laststatus=2
+set ruler
+set cursorline      " highlight the current line
+set number          " show the line numbers
+set showcmd
+set showmatch
+set showmode
+set list
+set listchars=tab:▒░
+
+" Disable all backup files
+set nobackup
+set nowritebackup
+set noswapfile
+
+
+"
+" Plugins config
+"
+
+" Unite
+let g:unite_prompt = "➤  "
+let g:unite_enable_start_insert = 1
+" let g:unite_split_rule = "botright"
+let g:unite_source_history_yank_enable = 1
+let g:unite_source_grep_command = 'ag'
+let g:unite_source_grep_default_opts =
+      \ '--line-numbers --nocolor --nogroup --hidden'
+call unite#custom_source('file_rec,file_rec/async,file_mru,file,buffer,grep',
+      \ 'ignore_pattern', join([
+      \ '.*-build/', 'ios-include/', 'ios-lib'
+      \ ], '\|'))
+nnoremap <silent> <C-P> :<C-u>Unite -buffer-name=files buffer file_rec/async:!<CR>
+nnoremap <silent> <leader>/ :<C-u>Unite -buffer-name=line -custom-line-enable-highlight line<CR>
+nnoremap <silent> <leader>t :<C-u>Unite -buffer-name=outline -vertical outline<CR>
+nnoremap <silent> <leader>a :<C-u>Unite -buffer-name=grep grep:.<CR>
+
+" Ultisnip
+" NOTE: <f1> otherwise it overrides <tab> forever
+let g:UltiSnipsExpandTrigger="<M-tab>"
+let g:UltiSnipsJumpForwardTrigger="<M-tab>"
+let g:UltiSnipsJumpBackwardTrigger="<M-S-tab>"
+let g:did_UltiSnips_vim_after = 1
+
+" vim-airline
+let g:airline#extensions#tabline#enabled = 1
+let g:airline_powerline_fonts = 1
+
+" Comments
+vmap <D-/> gc
+imap <D-/> <Esc>gcci
+nmap <D-/> gcc
+
+" YouCompleteMe
+let g:ycm_autoclose_preview_window_after_completion = 1
+let g:ycm_autoclose_preview_window_after_insertion = 1
+let g:ycm_key_list_select_completion=['<Tab>', '<Down>']
+let g:ycm_key_list_previous_completion=['<S-Tab>', '<Up>']
+nnoremap <leader>g :YcmCompleter GoTo<CR>
+nnoremap <leader>D :YcmDiags<CR>
+
+" multiple-cursors
+" prevent cursor events from flooding
+function Multiple_cursors_before()
+  let s:old_ycm_whitelist = g:ycm_filetype_whitelist
+  let g:ycm_filetype_whitelist = {}
+endfunction
+
+function Multiple_cursors_after()
+  let g:ycm_filetype_whitelist = s:old_ycm_whitelist
+endfunction
+
+" NERDTree
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
+nmap <leader>n :NERDTreeToggle<CR>
+
+" " Tagbar
+" let g:tagbar_left = 1
+" nmap <leader>t :TagbarToggle<CR>
+
+" Pyclewn
+let g:pyclewn_python = "/usr/local/bin/python"
+
+" trailing-whitespace
+let g:extra_whitespace_ignored_filetypes = ['unite']
+
+" git-gutter
+let g:gitgutter_sign_column_always = 1
+highlight clear SignColumn
+call gitgutter#highlight#define_highlights()
