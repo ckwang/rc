@@ -21,6 +21,7 @@ done
 
 ### SETUP VIM
 # create symlinks
+ln -s $VIMDIR $HOMEDIR/.vim
 ln -s $VIMDIR/vimrc $HOMEDIR/.vimrc
 ln -s $VIMDIR/gvimrc $HOMEDIR/.gvimrc
 
