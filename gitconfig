@@ -1,0 +1,14 @@
+[user]
+	name = Chun-Kai Wang
+	email = ckwang@amazon.com
+[push]
+	default = simple
+[alias]
+	graph = log --oneline --abbrev-commit --all --graph --decorate --color
+	dag = log --graph --format='format:%C(yellow)%h%C(reset) %C(blue)\"%an\" <%ae>%C(reset) %C(magenta)%cr%C(reset)%C(auto)%d%C(reset)%n%s' --date-order
+	st = status
+	co = checkout
+[color]
+	ui = auto
+[core]
+	pager = less -FMRiX
