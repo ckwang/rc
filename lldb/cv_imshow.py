@@ -30,8 +30,10 @@ import optparse
 import shlex
 from PIL import Image
 import struct
-from os import getenv
-from os import path
+# from os import getenv
+# from os import path
+import os.path
+import os
 import subprocess
 
 def chunker(seq, size):

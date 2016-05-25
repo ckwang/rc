@@ -26,4 +26,7 @@ ln -s $VIMDIR/vimrc $HOMEDIR/.vimrc
 ln -s $VIMDIR/gvimrc $HOMEDIR/.gvimrc
 
 # install vim plugins through Vundle
-vim +PluginInstall +qall
+vim +PlugInstall +qall
+
+### SETUP gitconfig
+ln -s gitconfig $HOMEDIR/.gitconfig
