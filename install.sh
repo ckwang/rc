@@ -2,31 +2,30 @@
 # This script installs the necessary vim plugins and create symlinks to any desired dotfiles
 
 ## Variables
-HOMEDIR=${ZDOTDIR:-$HOME}
-SOURCEDIR=$(dirname $0)
+SOURCEDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 VIMDIR=$SOURCEDIR/vim
 PREZTODIR=$SOURCEDIR/zprezto
 
 # run necessary submodules
-cd $SOURCEDIR
-git submodule update --init --recursive
-cd -
+(cd $SOURCEDIR ; git submodule update --init --recursive)
 
 ### SETUP Prezto
-ln -s $PREZTODIR $HOMEDIR/.zprezto
+ln -ihFs $PREZTODIR $HOME/.zprezto
 setopt EXTENDED_GLOB
-for rcfile in "${HOMEDIR}"/.zprezto/runcoms/^README.md(.N); do
-  ln -s "$rcfile" "${HOMEDIR}/.${rcfile:t}"
+for rcfile in "${HOME}"/.zprezto/runcoms/^README.md(.N); do
+  ln -is "$rcfile" "${HOME}/.${rcfile:t}"
 done
 
 ### SETUP VIM
 # create symlinks
-ln -s $VIMDIR $HOMEDIR/.vim
-ln -s $VIMDIR/vimrc $HOMEDIR/.vimrc
-ln -s $VIMDIR/gvimrc $HOMEDIR/.gvimrc
+mkdir -p ${XDG_CONFIG_HOME:=$HOME/.config}
+ln -ihFs $VIMDIR $XDG_CONFIG_HOME/nvim
+ln -ihFs $VIMDIR $HOME/.vim
+ln -is $VIMDIR/vimrc $HOME/.vimrc
+ln -is $VIMDIR/gvimrc $HOME/.gvimrc
 
 # install vim plugins through Vundle
-vim +PlugInstall +qall
+nvim +PlugUpdate +qall
 
 ### SETUP gitconfig
-ln -s gitconfig $HOMEDIR/.gitconfig
+ln -is $SOURCEDIR/gitconfig $HOME/.gitconfig
